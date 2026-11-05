@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+dist/
+build/
+*.egg-info/
+.env
+# 대화 기록이 실수로 올라가지 않도록
+notes/
+*.log
