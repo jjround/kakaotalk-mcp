@@ -22,7 +22,8 @@ def open_chat(name: str) -> str:
 
 @mcp.tool()
 def send_message(room: str, text: str) -> str:
-    """열려 있는 대화방(room = 창 제목)에 메시지를 보낸다. 줄바꿈은 그대로 보낸다."""
+    """대화방(room = 친구 이름 또는 창 제목)에 메시지를 보낸다. 창이 닫혀 있으면 검색해서 자동으로 연다. 
+    나와의 채팅은 자동으로 열리지 않으니 미리 열어 둘 것. 줄바꿈은 그대로 보낸다."""
     method = kakao.send_message(room, text)
     return f"'{room}'에 {len(text)}자를 보냈습니다. (Enter 방식: {method})"
 
