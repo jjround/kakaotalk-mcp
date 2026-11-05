@@ -69,7 +69,7 @@ Claude 데스크톱 앱에서는 설정의 개발자 메뉴에서 설정 파일(
 | --- | --- |
 | `list_chats()` | 열려 있는 대화방 창 이름 목록 |
 | `open_chat(name)` | 친구·대화방 이름으로 검색해서 창 열기 |
-| `send_message(room, text)` | 메시지 보내기 |
+| `send_message(room, text)` | 메시지 보내기 (창이 닫혀 있으면 먼저 열기) |
 | `read_messages(room, last_n=30)` | 최근 메시지 읽기 (`date`, `sender`, `time`, `text`) |
 | `wait_for_reply(room, timeout_sec=90, my_name="")` | 상대 답장이 올 때까지 기다렸다가 새 메시지만 반환 |
 

@@ -332,7 +332,8 @@ def open_chat(name: str, timeout: float = 6.0) -> str:
 
 
 def send_message(room: str, text: str) -> str:
-    """메시지를 보내고, 전송에 성공한 Enter 방식 이름을 돌려준다."""
+    """메시지를 보내고, 전송에 성공한 Enter 방식 이름을 돌려준다.
+    대화방 창이 닫혀 있으면 open_chat으로 먼저 연다."""
     global _last_send
     if not text.strip():
         raise KakaoError("빈 메시지는 보낼 수 없습니다.")
@@ -342,6 +343,8 @@ def send_message(room: str, text: str) -> str:
         wait = SEND_INTERVAL - (time.monotonic() - _last_send)
         if wait > 0:
             time.sleep(wait)
+        if room not in _chat_windows():
+            open_chat(room)
         chat = chat_window(room)
         edit = _descendant(chat, INPUT_CLASS)
         try:
