@@ -3,7 +3,6 @@
 PC 카카오톡을 **윈도우 메시지**로 조작하는 MCP 서버입니다. 화면을 캡처하지 않고 마우스도 움직이지 않아서, 에이전트가 카톡을 쓰는 동안에도 다른 작업을 할 수 있습니다.
 
 > 카카오와 관계없는 비공식 도구입니다. 카카오톡 이용약관은 자동화된 사용을 제한할 수 있으니 본인 계정에서 본인 책임으로 사용하세요. 스팸이나 대량 발송 용도로는 쓰지 마세요.
-> 같은 메시지를 반복 발송하거나 짧은 간격으로 대량 발송하면 카카오 운영정책(3-②(18), 4항)에 따라 계정이 제한될 수 있습니다. KAKAO_SEND_INTERVAL을 줄이지 마세요.
 
 ## 동작 방식
 
@@ -25,7 +24,7 @@ LLM (Claude Code 등) ──MCP──▶ kakaotalk-mcp ──윈도우 메시지
 ## 설치
 
 ```powershell
-git clone https://github.com/<내 계정>/kakaotalk-mcp.git
+git clone https://github.com/jjround/kakaotalk-mcp.git
 cd kakaotalk-mcp
 uv sync
 ```
@@ -69,7 +68,7 @@ Claude 데스크톱 앱에서는 설정의 개발자 메뉴에서 설정 파일(
 | --- | --- |
 | `list_chats()` | 열려 있는 대화방 창 이름 목록 |
 | `open_chat(name)` | 친구·대화방 이름으로 검색해서 창 열기 |
-| `send_message(room, text)` | 메시지 보내기 |
+| `send_message(room, text)` | 메시지 보내기 | 창이 닫혀 있으면 자동으로 엶 |
 | `read_messages(room, last_n=30)` | 최근 메시지 읽기 (`date`, `sender`, `time`, `text`) |
 | `wait_for_reply(room, timeout_sec=90, my_name="")` | 상대 답장이 올 때까지 기다렸다가 새 메시지만 반환 |
 

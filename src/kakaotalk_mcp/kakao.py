@@ -304,7 +304,8 @@ def open_chat(name: str, timeout: float = 6.0) -> str:
     with _lock:
         if name in _chat_windows():
             return name
-        hwnd = main_window()
+        main = main_window()
+        hwnd = main
         for cls in SEARCH_PATH:
             nxt = win32gui.FindWindowEx(hwnd, 0, cls, None)
             if not nxt:
@@ -326,7 +327,9 @@ def open_chat(name: str, timeout: float = 6.0) -> str:
         finally:
             # 성공하든 실패하든 검색칸을 비워 친구 목록을 원래대로 돌린다
             win32api.SendMessage(hwnd, win32con.WM_SETTEXT, 0, "")
-            _post_key(hwnd, win32con.VK_ESCAPE)
+            # Esc는 카톡 메인 창을 숨기므로 보내지 않는다. 숨겨졌다면 포커스를 뺏지 않고 다시 보이게 한다
+            if not win32gui.IsWindowVisible(main):
+                win32gui.ShowWindow(main, win32con.SW_SHOWNOACTIVATE)
         raise KakaoError(f"'{name}' 대화방이 열리지 않았습니다. 친구 목록에 있는 이름인지 확인하세요. "
                          "나와의 채팅은 검색으로 열리지 않으니 직접 열어 두세요.")
 
@@ -342,7 +345,12 @@ def send_message(room: str, text: str) -> str:
         wait = SEND_INTERVAL - (time.monotonic() - _last_send)
         if wait > 0:
             time.sleep(wait)
-        chat = chat_window(room)
+        try:
+            chat = chat_window(room)
+        except KakaoError:
+            open_chat(room)  # 창이 없으면 친구 이름으로 검색해서 연다
+            time.sleep(0.5)  # 새 창의 입력칸이 준비될 때까지 잠깐 기다린다
+            chat = chat_window(room)
         edit = _descendant(chat, INPUT_CLASS)
         try:
             return _send_text(edit, chat, text.replace("\r\n", "\n").replace("\n", "\r\n"))
